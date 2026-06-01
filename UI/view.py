@@ -16,8 +16,13 @@ class View(ft.UserControl):
         self._controller = None
         # graphical elements
         self._title = None
-        self._txt_name = None
-        self._txt_result = None
+        self._ddAnno1 = None
+        self._ddAnno2 = None
+        self._btnCreaGrafo = None
+        self._btnstampa = None
+        self._txtInK = None
+        self._btnCerca = None
+        self.txt_result = None
 
     def load_interface(self):
         # title
@@ -26,6 +31,7 @@ class View(ft.UserControl):
 
         self._ddAnno1 = ft.Dropdown(label="Da", hint_text="Anno")
         self._ddAnno2 = ft.Dropdown(label="A", hint_text="Anno")
+        self._controller.fillDDAnno()
         self._btnCreaGrafo = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handleCreaGrafo)
 
 
@@ -35,15 +41,18 @@ class View(ft.UserControl):
                       vertical_alignment=ft.CrossAxisAlignment.END)
 
         self._btnstampa = ft.ElevatedButton(text="Stampa Dettagli",
-                                           on_click=self._controller.handleDettagli)
+                                           on_click=self._controller.handleDettagli,
+                                            disabled=True)
         row2 = ft.Row([ft.Container(self._btnstampa, width=250)
                        ], alignment=ft.MainAxisAlignment.CENTER)
 
 
         self._txtInK = ft.TextField(label="Num di piloti")
         self._btnCerca = ft.ElevatedButton(text="Cerca lista piloti",
-                                           on_click=self._controller.handleCerca)
-        row3 = ft.Row([ft.Container(self._txtInK, width=250), ft.Container(self._btnCerca, width=250)], alignment=ft.MainAxisAlignment.CENTER)
+                                           on_click=self._controller.handleCerca,
+                                           disabled=True)
+        row3 = ft.Row([ft.Container(self._txtInK, width=250), ft.Container(self._btnCerca, width=250)],
+                      alignment=ft.MainAxisAlignment.CENTER)
 
         self._page.controls.append(row1)
         self._page.controls.append(row2)
@@ -56,4 +65,10 @@ class View(ft.UserControl):
         self._controller = controller
 
     def update_page(self):
+        self._page.update()
+
+    def create_alert(self, message):
+        dlg = ft.AlertDialog(title=ft.Text(message))
+        self._page.dialog = dlg
+        dlg.open = True
         self._page.update()
